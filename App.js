@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
+import Data from './Services/data.json';
 import {
-  AppRegistry,
   StyleSheet,
-  FlatList
+  FlatList,
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput
 } from 'react-native';
-import Post from './components/Post';
+import Post from './Components/Post';
 
 export default class InstaluraMobile extends Component {
 
@@ -13,25 +17,58 @@ export default class InstaluraMobile extends Component {
     this.state = {
       fotos: []
     }
+    this.componentDidMount = this.componentDidMount.bind(this);
   }
 
   componentDidMount() {
-    const listaFotos = {
-      
-
-
-    }
+    const data = Data ;
+    this.setState({fotos: data});
   }
 
   render() {
     return (
-      <FlatList style={styles.container}
-          keyExtractor={item => item.id}
-          data={this.state.fotos}
-          renderItem={ ({item}) =>
-            <Post foto={item}/>
-          }
-      />
+      <View>
+        <FlatList style={styles.container}
+            keyExtractor={item => item.id}
+            data={this.state.fotos.data}
+            renderItem={ ({item}) =>
+              <Post foto={item}/>
+            }
+        />
+         <View>
+        <View>
+          <Text>@Joaoamass</Text>
+        </View>
+        
+
+        <View >
+          <TouchableOpacity >
+            <Text>Like</Text>
+          </TouchableOpacity>
+
+      
+          <View>
+            <Text>Joao</Text>
+            <Text>Texo Comentario</Text>
+          </View>
+         
+
+          <View >
+            <TextInput 
+                placeholder="Adicione um comentário..."
+                />
+
+            <TouchableOpacity>
+             <Text>Imgaem Send</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
+
+
+
+
+      </View>    
     );
   }
 }
@@ -53,3 +90,13 @@ const styles = StyleSheet.create({
   )
 } )}
 </ScrollView> */}
+
+
+
+{/* <FlatList style={styles.container}
+keyExtractor={item => item.id}
+data={this.state.fotos}
+renderItem={ ({item}) =>
+  <Post foto={item}/>
+}
+/> */}

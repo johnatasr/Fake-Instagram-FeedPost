@@ -10,6 +10,10 @@ import {
   TextInput
 } from 'react-native';
 
+import s2 from '../assets/s2.png'
+import s2Checked from '../assets/s2-checked.png'
+import send from '../assets/send.png'
+
 const width = Dimensions.get('screen').width;
 
 export default class Post extends Component {
@@ -23,10 +27,9 @@ export default class Post extends Component {
   }
 
   carregaIcone(likeada) {
-    return likeada ? require('../../resources/img/s2-checked.png') :
-        require('../../resources/img/s2.png')
-  }
-
+    return likeada ? s2 : s2Checked
+  };
+  
   exibeLikes(likers) {
     if(likers.length <= 0 )
       return;
@@ -131,7 +134,7 @@ export default class Post extends Component {
 
             <TouchableOpacity onPress={this.adicionaComentario.bind(this)}>
               <Image style={styles.icone}
-                  source={require('../../resources/img/send.png')} />
+                  source={send} />
             </TouchableOpacity>
           </View>
         </View>

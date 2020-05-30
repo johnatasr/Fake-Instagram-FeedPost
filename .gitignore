@@ -12,3 +12,6 @@ web-report/
 
 # macOS
 .DS_Store
+api_flask/.idea
+api_flask/__pycache__
+api_flask/_pycache_
