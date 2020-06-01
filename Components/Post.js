@@ -10,9 +10,11 @@ import {
   TextInput
 } from 'react-native';
 
+import Comments from '../Components/Comment'
+
 import s2 from '../assets/s2.png'
 import s2Checked from '../assets/s2-checked.png'
-import send from '../assets/send.png'
+
 
 const width = Dimensions.get('screen').width;
 
@@ -21,122 +23,91 @@ export default class Post extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      foto: this.props.foto,
-      valorComentario: ''
+      post: [],
+      valorComentario: '',
+      
     }
   }
 
-  carregaIcone(likeada) {
-    return likeada ? s2 : s2Checked
+  carregaIcone(liked) {
+    if ( liked === 1 ){
+      return s2Checked
+    } else {
+      return s2
+    }
   };
   
   exibeLikes(likers) {
-    if(likers.length <= 0 )
+    if(likers <= 0 )
       return;
 
     return (
       <Text style={styles.likes}>
-        {likers.length} {likers.length > 1 ? 'curtidas' : 'curtida'}
+        {likers} {likers > 1 ? 'curtidas' : 'curtida'}
       </Text>
     );
   }
 
-  exibeLegenda(foto) {
-    if(foto.comentario === '')
+  exibeLegenda(post) {
+    if(post.comment === '')
       return;
 
     return (
       <View style={styles.comentario}>
-        <Text style={styles.tituloComentario}>{foto.loginUsuario}</Text>
-        <Text>{foto.comentario}</Text>
+        <Text style={styles.tituloComentario}>{post.login}</Text>
+        <Text>{post.comment}</Text>
       </View>
     );
   }
 
   like() {
-    const { foto } = this.state;
+    const { post } = this.props;
 
     let novaLista = []
-    if(!foto.likeada) {
+    if(post.liked == 0 ) {
       novaLista = [
-        ...foto.likers,
-        {login: 'meuUsuario'}
+        ...post.likers,
+        {login_likers: 'UsuarioTeste'}
       ]
     } else {
-      novaLista = foto.likers.filter(liker => {
+      novaLista = post.likers.filter(liker => {
         return liker.login !== 'meuUsuario'
       })
     }
 
-    const fotoAtualizada = {
-      ...foto,
-      likeada: !foto.likeada,
+    const postAtualizado = {
+      ...post,
+      liked: !post.liked,
       likers: novaLista
     }
 
-    this.setState({foto: fotoAtualizada})
-  }
-
-  adicionaComentario() {
-    if(this.state.valorComentario === '')
-      return;
-
-    const novaLista = [...this.state.foto.comentarios, {
-      id: this.state.valorComentario,
-      login: 'meuUsuario',
-      texto: this.state.valorComentario
-    }];
-
-    const fotoAtualizada = {
-      ...this.state.foto,
-      comentarios: novaLista
-    }
-
-    this.setState({foto: fotoAtualizada, valorComentario: ''});
-    this.inputComentario.clear();
-
+    this.setState({post: postAtualizado})
   }
 
   render() {
-    const { foto } = this.state;
+    const { post } = this.props;
 
     return (
       <View>
         <View style={styles.cabecalho}>
-          <Image source={{uri: foto.urlPerfil}}
+          <Image source={{uri: post.url_perfil}}
               style={styles.fotoDePerfil}/>
-          <Text>{foto.loginUsuario}</Text>
+          <Text>{post.login}</Text>
         </View>
-        <Image source={{uri: foto.urlFoto}}
+        <Image source={{uri: post.url_photo}}
             style={styles.foto}/>
 
         <View style={styles.rodape}>
           <TouchableOpacity onPress={this.like.bind(this)}>
             <Image style={styles.botaoDeLike}
-                source={this.carregaIcone(foto.likeada)} />
+                source={this.carregaIcone(post.liked)} />
           </TouchableOpacity>
 
-          {this.exibeLikes(foto.likers)}
-          {this.exibeLegenda(foto)}
+          {this.exibeLikes(post.likers)}
+          {this.exibeLegenda(post)}
 
-          {foto.comentarios.map(comentario =>
-            <View style={styles.comentario} key={comentario.id}>
-              <Text style={styles.tituloComentario}>{comentario.login}</Text>
-              <Text>{comentario.texto}</Text>
-            </View>
-          )}
+          <Comments comentarios={post.comments} />
 
-          <View style={styles.novoComentario}>
-            <TextInput style={styles.input}
-                placeholder="Adicione um comentário..."
-                ref={input => this.inputComentario = input}
-                onChangeText={texto => this.setState({valorComentario: texto})}/>
-
-            <TouchableOpacity onPress={this.adicionaComentario.bind(this)}>
-              <Image style={styles.icone}
-                  source={send} />
-            </TouchableOpacity>
-          </View>
         </View>
       </View>
     );

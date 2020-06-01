@@ -12,11 +12,12 @@ def create_database(db_path):
 
     cursor.execute(create_comment_table)
 
-    create_post_table ='{}{}{}{}{}{}'.format(
+    create_post_table ='{}{}{}{}{}{}{}'.format(
                           'CREATE TABLE IF NOT EXISTS',
                           ' posts(id INTEGER PRIMARY KEY,',
                           ' url_perfil text, url_photo text,',
                           ' login_user text,',
+                          ' comment text,',
                           ' liked INTEGER NOT NULL DEFAULT 0 CHECK(liked IN (0,1)),',
                           ' likers INTEGER NOT NULL);',
                           )
@@ -39,11 +40,11 @@ def create_database(db_path):
     cursor.execute('INSERT OR REPLACE INTO comments VALUES(7, "jimmypage123", "My guitar its more useful");')
     cursor.execute('INSERT OR REPLACE INTO comments VALUES(8, "jessica_k10", "Try again soon");')
 
-    cursor.execute('INSERT OR REPLACE INTO posts VALUES(1, "https://ibb.co/album/bbX6pK", "https://ibb.co/gTTKJG4", "john123", 1, 10);')
-    cursor.execute('INSERT OR REPLACE INTO posts VALUES(2, "https://ibb.co/album/bbX6pK", "https://ibb.co/pZSvY88", "jessica_k10", 1, 15);')
-    cursor.execute('INSERT OR REPLACE INTO posts VALUES(3, "https://ibb.co/album/bbX6pK", "https://ibb.co/xLD2g5N", "barbara@happy", 1, 3);')
-    cursor.execute('INSERT OR REPLACE INTO posts VALUES(4, "https://ibb.co/album/bbX6pK", "https://ibb.co/KrWtW01", "michaelmiller68", 0, 0);')
-    cursor.execute('INSERT OR REPLACE INTO posts VALUES(5, "https://ibb.co/album/bbX6pK", "https://ibb.co/7C9V6hy", "hudson1970", 1, 58);')
+    cursor.execute('INSERT OR REPLACE INTO posts VALUES(1, "https://ibb.co/album/bbX6pK", "https://ibb.co/gTTKJG4", "john123", "Nice Place", 1, 10);')
+    cursor.execute('INSERT OR REPLACE INTO posts VALUES(2, "https://ibb.co/album/bbX6pK", "https://ibb.co/pZSvY88", "jessica_k10", "Amazing", 1, 15);')
+    cursor.execute('INSERT OR REPLACE INTO posts VALUES(3, "https://ibb.co/album/bbX6pK", "https://ibb.co/xLD2g5N", "barbara@happy", "Cool", 1, 3);')
+    cursor.execute('INSERT OR REPLACE INTO posts VALUES(4, "https://ibb.co/album/bbX6pK", "https://ibb.co/KrWtW01", "michaelmiller68", "Take that", 0, 0);')
+    cursor.execute('INSERT OR REPLACE INTO posts VALUES(5, "https://ibb.co/album/bbX6pK", "https://ibb.co/7C9V6hy", "hudson1970", "Other Place", 1, 58);')
 
     cursor.execute('''INSERT INTO post_comments_ref VALUES
                         (1,1), 
