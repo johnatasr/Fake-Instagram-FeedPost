@@ -23,27 +23,34 @@ export default class Post extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      post: [],
+      likedState: false,
+      likersState: 0,
       valorComentario: '',
-      
     }
   }
 
   carregaIcone(liked) {
-    if ( liked === 1 ){
+    if ( liked == true ){
       return s2Checked
     } else {
       return s2
     }
   };
   
-  exibeLikes(likers) {
-    if(likers <= 0 )
+  exibeLikes() {
+
+    this.setState({
+      likersState: this.props.post.likers
+    })
+
+    const likes = this.state.likersState ;
+
+    if(likes <= 0 )
       return;
 
     return (
       <Text style={styles.likes}>
-        {likers} {likers > 1 ? 'curtidas' : 'curtida'}
+        {likes} {likes > 1 ? 'curtidas' : 'curtida'}
       </Text>
     );
   }
@@ -61,27 +68,28 @@ export default class Post extends Component {
   }
 
   like() {
-    const { post } = this.props;
 
-    let novaLista = []
-    if(post.liked == 0 ) {
-      novaLista = [
-        ...post.likers,
-        {login_likers: 'UsuarioTeste'}
-      ]
+    const likes = this.state.likersState ;
+
+    if(this.state.likedState == false ) {
+      
+      const valLikers = likes + 1 ; 
+      
+      this.setState({
+        likedState: true,
+        likersState: valLikers
+      })
+
     } else {
-      novaLista = post.likers.filter(liker => {
-        return liker.login !== 'meuUsuario'
+      
+      const valLikers = likes - 1; 
+      
+      this.setState({
+        likedState: false,
+        likersState: valLikers
       })
     }
 
-    const postAtualizado = {
-      ...post,
-      liked: !post.liked,
-      likers: novaLista
-    }
-
-    this.setState({post: postAtualizado})
   }
 
   render() {
@@ -103,10 +111,10 @@ export default class Post extends Component {
                 source={this.carregaIcone(post.liked)} />
           </TouchableOpacity>
 
-          {this.exibeLikes(post.likers)}
+          {this.exibeLikes.bind(this)}
           {this.exibeLegenda(post)}
 
-          <Comments comentarios={post.comments} />
+          {/*  <Comments comentarios={post.comments} /> */}
 
         </View>
       </View>

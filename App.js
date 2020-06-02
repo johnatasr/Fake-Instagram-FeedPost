@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Data from './Services/data.json';
 import {
   StyleSheet,
   FlatList,
@@ -10,64 +9,51 @@ import {
 } from 'react-native';
 import Post from './Components/Post';
 
-export default class InstaluraMobile extends Component {
+import axios from 'axios'; 
+
+export default class InstagramFake extends Component {
 
   constructor() {
     super();
     this.state = {
-      fotos: []
+      posts: [],
+      error: false,
+      msgError: ""
     }
     this.componentDidMount = this.componentDidMount.bind(this);
   }
 
-  componentDidMount() {
-    const data = Data ;
-    this.setState({fotos: data});
+  async componentDidMount() {
+
+   await axios.get('http://127.0.0.1:5001/posts')
+        .then( response => {
+            const posts = response.posts;
+            console.log(response);
+            // this.setState({
+            //     pessoas : pessoas,
+            //     loading: false
+            // });
+        }).catch( error => {
+          this.setState({
+            error: true,
+            msgError: " Ops ! Algo não aconteceu como esperado ... "
+          })
+        }) 
   }
 
   render() {
     return (
       <View>
-        <FlatList style={styles.container}
-            keyExtractor={item => item.id}
-            data={this.state.fotos.data}
-            renderItem={ ({item}) =>
-              <Post foto={item}/>
-            }
-        />
-         <View>
-        <View>
-          <Text>@Joaoamass</Text>
-        </View>
-        
-
-        <View >
-          <TouchableOpacity >
-            <Text>Like</Text>
-          </TouchableOpacity>
-
-      
-          <View>
-            <Text>Joao</Text>
-            <Text>Texo Comentario</Text>
-          </View>
-         
-
-          <View >
-            <TextInput 
-                placeholder="Adicione um comentário..."
-                />
-
-            <TouchableOpacity>
-             <Text>Imgaem Send</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </View>
-
-
-
-
+          { this.state.error 
+            ? <Text>{this.state.msgError}</Text>
+            : <FlatList style={styles.container}
+                keyExtractor={item => item.id}
+                data={this.state.posts}
+                renderItem={ ({item}) =>
+                  <Post post={item}/>
+                }
+              />
+          } 
       </View>    
     );
   }
@@ -100,3 +86,19 @@ renderItem={ ({item}) =>
   <Post foto={item}/>
 }
 /> */}
+
+
+
+
+
+
+// { this.state.error 
+//   ? <Text>{this.state.msgError}</Text>
+//   : <FlatList style={styles.container}
+//       keyExtractor={item => item.id}
+//       data={this.state.posts}
+//       renderItem={ ({item}) =>
+//         <Post post={item}/>
+//       }
+//     />
+// } 
