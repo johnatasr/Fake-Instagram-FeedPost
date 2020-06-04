@@ -8,8 +8,9 @@ import {
   TextInput
 } from 'react-native';
 import Post from './Components/Post';
+import Header from './Components/Header'
 
-import axios from 'axios'; 
+import Api from './Services/Api'
 
 export default class InstagramFake extends Component {
 
@@ -25,14 +26,14 @@ export default class InstagramFake extends Component {
 
   async componentDidMount() {
 
-   await axios.get('http://127.0.0.1:5001/posts')
-        .then( response => {
-            const posts = response.posts;
-            console.log(response);
-            // this.setState({
-            //     pessoas : pessoas,
-            //     loading: false
-            // });
+   await Api.get('posts',{
+     headers: {'Content-type' : 'application/json'}
+      }).then( response => {
+            const posts = response.data.post;
+            console.log(posts)
+            this.setState({
+                posts : posts,
+            });
         }).catch( error => {
           this.setState({
             error: true,
@@ -44,8 +45,9 @@ export default class InstagramFake extends Component {
   render() {
     return (
       <View>
+          <Header />
           { this.state.error 
-            ? <Text>{this.state.msgError}</Text>
+            ? <Text style={styles.msgError} >{this.state.msgError}</Text>
             : <FlatList style={styles.container}
                 keyExtractor={item => item.id}
                 data={this.state.posts}
@@ -63,6 +65,11 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 20
   },
+
+  // msgError:{
+  //   fontSize: 20,
+  //   flex: 1
+  // }
 });
 
 

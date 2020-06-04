@@ -40,7 +40,7 @@ export default class Post extends Component {
   exibeLikes() {
 
     this.setState({
-      likersState: this.props.post.likers
+      likersState: this.props.likers
     })
 
     const likes = this.state.likersState ;
@@ -114,7 +114,7 @@ export default class Post extends Component {
           {this.exibeLikes.bind(this)}
           {this.exibeLegenda(post)}
 
-          {/*  <Comments comentarios={post.comments} /> */}
+          <Comments comentarios={post.comments}/> 
 
         </View>
       </View>
