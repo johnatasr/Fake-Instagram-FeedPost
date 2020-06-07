@@ -89,7 +89,6 @@ export default class Post extends Component {
         likersState: valLikers
       })
     }
-
   }
 
   render() {

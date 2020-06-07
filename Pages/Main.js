@@ -7,12 +7,12 @@ import {
   TouchableOpacity,
   TextInput
 } from 'react-native';
-import Post from './Components/Post';
-import Header from './Components/Header'
+import Post from '../Components/Post';
+import Header from '../Components/Header'
 
-import Api from './Services/Api'
+import Api from '../Services/Api'
 
-export default class InstagramFake extends Component {
+export default class Main extends Component {
 
   constructor() {
     super();
@@ -72,40 +72,3 @@ const styles = StyleSheet.create({
   // }
 });
 
-
-{/* <ScrollView>
-{this.state.fotos.map( foto => {
-  return (
-    <View key={foto.id}>
-      <Text>{foto.nome}</Text>
-      <Image source={require('./assets/icon.png')} style={{ width: width, height: width }} />
-    </View>
-  )
-} )}
-</ScrollView> */}
-
-
-
-{/* <FlatList style={styles.container}
-keyExtractor={item => item.id}
-data={this.state.fotos}
-renderItem={ ({item}) =>
-  <Post foto={item}/>
-}
-/> */}
-
-
-
-
-
-
-// { this.state.error 
-//   ? <Text>{this.state.msgError}</Text>
-//   : <FlatList style={styles.container}
-//       keyExtractor={item => item.id}
-//       data={this.state.posts}
-//       renderItem={ ({item}) =>
-//         <Post post={item}/>
-//       }
-//     />
-// } 
