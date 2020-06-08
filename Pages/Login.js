@@ -9,10 +9,12 @@ import {
   Button
 } from 'react-native';
 
+import GradientButton from 'react-native-gradient-buttons'
+
 import titleImg from '../assets/icon.png'
 import instafake from '../assets/title_sm.png'
-import send from '../assets/send.png'
 
+import { scaleVertical } from '../Utils/Scale'
 
 export default class Login extends Component {
 
@@ -29,19 +31,49 @@ export default class Login extends Component {
   }
 
   login() {
-    this.props.navigation.navigate('Post', { 
-      user: this.state.user, 
-      pass: this.state.pass
-    })
 
+    const user = this.state.user;
+    const password = this.state.pass;
 
+    if( user == '' || password == ''){
+
+      this.setState({error: true})
+
+      if ( user == '') {
+        this.setState({msgError: 'Usuário deve ser fornecido'})
+      }
+      if ( password == ''){
+        this.setState({msgError: 'Senha deve ser fornecida'})
+      }
+    } else {
+      if ( password.length < 8 ) {
+        this.setState({msgError: 'Sua senha deve conter mais de 8 dígitos', error:true})
+      } else {
+        this.props.navigation.navigate(
+          'Post',{ 
+            user: this.state.user, 
+            pass: this.state.pass
+          })
+        this.user.clear()
+        this.pass.clear()
+      }     
+    }
   }
 
 
   render() {
     return (
+
       <View style={styles.container}>
+        { this.state.error
+            ? <View style={styles.msgError} >
+                <Text style={styles.msgErrorText}>{this.state.msgError}</Text>
+              </View>
+            : <View style={styles.topWithoutError}></View>
+        } 
+        
         <View style={styles.img} >
+          <Image source={titleImg} />
           <Image source={instafake}/>
         </View>
         <View style={styles.form} >          
@@ -49,22 +81,37 @@ export default class Login extends Component {
             <Text style={styles.title}>Login</Text>
           </View>
           <View style={styles.formView}>
+            <Text>Usuário</Text>
             <TextInput style={styles.input}
-                placeholder="Seu usuário ...."
-                ref={input => this.inputUser = input}
+                textContentType="username"
+                value={this.state.user}
+                ref={input => this.user = input}
+                placeholder="Entre com seu login"
                 onChangeText={user => this.setState({user: user })}/>
-
+            <Text>Senha</Text>
             <TextInput style={styles.input}
-                placeholder="Digite sua senha ..."
-                ref={input => this.inputComentario = input}
-                onChangeText={pass => this.setState({pass: pass})}/>
+                ref={input => this.pass = input}
+                onChangeText={pass => this.setState({pass: pass})}
+                placeholder="Sua senha"
+                secureTextEntry={true}    
+            />
+          
 
-            <Button
-              onPress={login}
-              title="Entrar"
-              color="#841584"
-              accessibilityLabel="Esqueceu sua conta ?"
-            />  
+            <GradientButton
+              style={{ marginVertical: scaleVertical(6), }}
+              text="Entrar"
+              textStyle={{ fontSize: 20 }}
+              gradientBegin="#e1b961"
+              gradientEnd="#be2199"
+              gradientDirection="diagonal"
+              height={60}
+              width={280}
+              radius={50}
+              impact
+              impactStyle='Light'
+              onPressAction={this.login}
+            />
+
           </View>     
       </View> 
     </View>    
@@ -80,7 +127,7 @@ const styles = StyleSheet.create({
 
   img:{
     alignItems: 'center',
-    marginTop: 100
+    marginTop: 20
   },
 
   titleView: {
@@ -91,28 +138,55 @@ const styles = StyleSheet.create({
     fontSize: 30,
     alignItems: 'center'
   },
-  // msgError:{
 
-  //   fontSize: 20,
-  //   flex: 1
-  // }
+  topWithoutError: {
+    marginTop: 20,
+    padding: 25,
+  },
+
+  msgError:{
+    alignItems: "center",
+    marginTop: 20,
+    padding: 15,
+    backgroundColor: '#3a45bf',
+    marginLeft: 20,
+    marginRight: 20,
+    borderRadius: 60
+  },
+
+  msgErrorText:{
+      color: '#fff',
+      fontSize: 15,
+  },
 
   form: {
     padding: 10 
   },
 
   formView:{
-    flex: 1,
     marginLeft: 50,
-    marginRight: 50
+    marginRight: 50,
+    marginTop:10
   },
 
   input: {
-    height: 50,
-    borderColor: '#45432a',
-    borderBottomColor: 'green',
+    borderWidth: 0.5,
+    borderColor: "#D3D3D3",
+    borderRadius: 50,
+    marginVertical: scaleVertical(7),
+    fontWeight: "bold",
+    height: 40,
+    padding: 10,
   },
 
+  // buttonLogin: {
+  //   marginTop: 70,
+  //   padding: 20,
+  //   paddingBottom: 50,
+  //   borderRadius: 6
+  // }
+
 });
+
 
 

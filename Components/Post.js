@@ -7,14 +7,15 @@ import {
   Dimensions,
   FlatList,
   TouchableOpacity,
-  TextInput
+  Linking
 } from 'react-native';
 
 import Comments from '../Components/Comment'
 
 import s2 from '../assets/s2.png'
 import s2Checked from '../assets/s2-checked.png'
-
+import msgImg  from '../assets/message.png'
+import sendUp from '../assets/sendUp.png'
 
 const width = Dimensions.get('screen').width;
 
@@ -29,8 +30,8 @@ export default class Post extends Component {
     }
   }
 
-  carregaIcone(liked) {
-    if ( liked == true ){
+  carregaIcone() {
+    if ( this.state.likedState == true ){
       return s2Checked
     } else {
       return s2
@@ -39,11 +40,7 @@ export default class Post extends Component {
   
   exibeLikes() {
 
-    this.setState({
-      likersState: this.props.likers
-    })
-
-    const likes = this.state.likersState ;
+    const likes = this.state.likersState;
 
     if(likes <= 0 )
       return;
@@ -69,11 +66,11 @@ export default class Post extends Component {
 
   like() {
 
-    const likes = this.state.likersState ;
+    const likers = this.state.likersState ;
 
     if(this.state.likedState == false ) {
       
-      const valLikers = likes + 1 ; 
+      let valLikers = likers + 1 ; 
       
       this.setState({
         likedState: true,
@@ -82,7 +79,7 @@ export default class Post extends Component {
 
     } else {
       
-      const valLikers = likes - 1; 
+      let valLikers = likers - 1; 
       
       this.setState({
         likedState: false,
@@ -90,10 +87,17 @@ export default class Post extends Component {
       })
     }
   }
+  
+  componentDidMount() {
+    this.setState({
+      likersState: this.props.post.likers
+    })
+  }
+
 
   render() {
-    const { post } = this.props;
-
+    const { post, user } = this.props;
+    
     return (
       <View>
         <View style={styles.cabecalho}>
@@ -105,15 +109,28 @@ export default class Post extends Component {
             style={styles.foto}/>
 
         <View style={styles.rodape}>
-          <TouchableOpacity onPress={this.like.bind(this)}>
-            <Image style={styles.botaoDeLike}
-                source={this.carregaIcone(post.liked)} />
-          </TouchableOpacity>
+          <View style={{ flexDirection: 'row' }}>
+            <TouchableOpacity onPress={this.like.bind(this)}>
+              <Image style={styles.botaoDeLike}
+                  source={this.carregaIcone()} />
+            </TouchableOpacity>
 
-          {this.exibeLikes.bind(this)}
+            <TouchableOpacity>
+              <Image style={styles.msgImg}
+                  source={msgImg} />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => Linking.openURL('http://instagram.com')}>
+              <Image style={styles.sendUp}
+                  source={sendUp} />
+            </TouchableOpacity>
+
+          </View>
+        
+          {this.exibeLikes()}
           {this.exibeLegenda(post)}
 
-          <Comments comentarios={post.comments}/> 
+          <Comments comentarios={post.comments} user={user} /> 
 
         </View>
       </View>
@@ -168,5 +185,21 @@ const styles = StyleSheet.create({
   icone: {
     width: 30,
     height: 30
+  },
+
+  msgImg: {
+    width: 50,
+    height: 50,
+    marginLeft: 5,
+    bottom: 5
+  },
+  
+  sendUp: {
+    width: 50,
+    height: 50,
+    left: -4,
+    bottom: 5
   }
+  
+
 });

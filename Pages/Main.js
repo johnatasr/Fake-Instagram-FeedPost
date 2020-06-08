@@ -4,8 +4,6 @@ import {
   FlatList,
   Text,
   View,
-  TouchableOpacity,
-  TextInput
 } from 'react-native';
 import Post from '../Components/Post';
 import Header from '../Components/Header'
@@ -30,7 +28,6 @@ export default class Main extends Component {
      headers: {'Content-type' : 'application/json'}
       }).then( response => {
             const posts = response.data.post;
-            console.log(posts)
             this.setState({
                 posts : posts,
             });
@@ -43,16 +40,19 @@ export default class Main extends Component {
   }
 
   render() {
+
+    const { user } = this.props.route.params 
+
     return (
       <View>
-          <Header />
+          <Header props={this.props} />
           { this.state.error 
             ? <Text style={styles.msgError} >{this.state.msgError}</Text>
             : <FlatList style={styles.container}
                 keyExtractor={item => item.id}
                 data={this.state.posts}
                 renderItem={ ({item}) =>
-                  <Post post={item}/>
+                  <Post post={item} user={user} />
                 }
               />
           } 
