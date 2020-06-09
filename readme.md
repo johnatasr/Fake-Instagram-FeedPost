@@ -4,9 +4,9 @@
 <p align="center">
   
   
-  <img alt="GitHub last commit" src="https://github.com/johnatasr/">
-  <img alt="Repository issues" src="https://github.com/johnatasr/">
-  <img alt="Repository issues" src="https://github.com/johnatasr/">
+  <img alt="GitHub last commit" src="https://github.com/johnatasr/Fake-Instagram-FeedPost/blob/master/Screens/1.PNG">
+  <img alt="Repository issues" src="https://github.com/johnatasr/Fake-Instagram-FeedPost/blob/master/Screens/2.PNG">
+  <img alt="Repository issues" src="https://github.com/johnatasr/Fake-Instagram-FeedPost/blob/master/Screens/3.PNG">
   
 
 </p>
