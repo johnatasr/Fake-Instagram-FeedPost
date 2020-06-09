@@ -4,6 +4,7 @@ import {
   FlatList,
   Text,
   View,
+  ActivityIndicator
 } from 'react-native';
 import Post from '../Components/Post';
 import Header from '../Components/Header'
@@ -16,6 +17,7 @@ export default class Main extends Component {
     super();
     this.state = {
       posts: [],
+      loading: false,
       error: false,
       msgError: ""
     }
@@ -24,15 +26,19 @@ export default class Main extends Component {
 
   async componentDidMount() {
 
-   await Api.get('posts',{
-     headers: {'Content-type' : 'application/json'}
+    this.setState({ loading: true })
+
+    await Api.get('posts',{
+      headers: {'Content-type' : 'application/json'}
       }).then( response => {
             const posts = response.data.post;
             this.setState({
                 posts : posts,
+                loading: false
             });
         }).catch( error => {
           this.setState({
+            loading: false,
             error: true,
             msgError: " Ops ! Algo não aconteceu como esperado ... "
           })
@@ -41,20 +47,22 @@ export default class Main extends Component {
 
   render() {
 
-    const { user } = this.props.route.params 
-
+    const { user } = this.props.route.params
+    
     return (
       <View>
           <Header props={this.props} />
-          { this.state.error 
-            ? <Text style={styles.msgError} >{this.state.msgError}</Text>
-            : <FlatList style={styles.container}
-                keyExtractor={item => item.id}
-                data={this.state.posts}
-                renderItem={ ({item}) =>
-                  <Post post={item} user={user} />
-                }
-              />
+          { this.state.loading
+            ? <ActivityIndicator size='large' color="#be2199" /> 
+            : this.state.error
+              ? <Text style={styles.msgError} >{this.state.msgError}</Text>
+              : <FlatList style={styles.container}
+                  keyExtractor={item => item.id}
+                  data={this.state.posts}
+                  renderItem={ ({item}) =>
+                    <Post post={item} user={user} />
+                  }
+                />
           } 
       </View>    
     );
@@ -66,9 +74,9 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
 
-  // msgError:{
-  //   fontSize: 20,
-  //   flex: 1
-  // }
+  msgError:{
+    fontSize: 20,
+    marginTop: 30
+  }
 });
 

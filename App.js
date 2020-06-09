@@ -1,6 +1,6 @@
 import React from 'react';
-import { NavigationContainer, createSwitchNavigator, createAppContainer } from '@react-navigation/native';
-import { createStackNavigator, HeaderBackground } from '@react-navigation/stack';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import Posts from './Pages/Main';
 import Login from './Pages/Login';

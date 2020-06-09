@@ -23,7 +23,7 @@ class Header extends Component {
     }
 
     CameraStart() {
-        return alert('Camera Started')
+        return alert('Camera Soon ...')
     }
     
     GoHome(){
@@ -35,18 +35,15 @@ class Header extends Component {
     }
     
     LogOut(){
-        this.props.props.navigation.navigate(
-            'Login',{ 
-              user: '', 
-              pass: ''
-        })
+        this.props.props.navigation.setParams({ user: '', pass: ''  })
+        this.props.props.navigation.navigate('Login')
     }
     
        
     render() {
         return (
             <View style={styles.container}>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={this.CameraStart}>
                     <Image style={styles.camera} source={cameraImg}/>
                 </TouchableOpacity>
                 <Image style={styles.image} source={titleImage}/>
@@ -101,7 +98,7 @@ const styles = StyleSheet.create({
         marginTop: 12,
         width: 30,
         height: 30,
-        marginRight:5
+        marginRight:6
     },
 
     logout: {

@@ -5,8 +5,6 @@ import {
   View,
   TextInput,
   Image,
-  TouchableOpacity,
-  Button
 } from 'react-native';
 
 import GradientButton from 'react-native-gradient-buttons'
@@ -96,7 +94,6 @@ export default class Login extends Component {
                 secureTextEntry={true}    
             />
           
-
             <GradientButton
               style={{ marginVertical: scaleVertical(6), }}
               text="Entrar"
@@ -178,13 +175,6 @@ const styles = StyleSheet.create({
     height: 40,
     padding: 10,
   },
-
-  // buttonLogin: {
-  //   marginTop: 70,
-  //   padding: 20,
-  //   paddingBottom: 50,
-  //   borderRadius: 6
-  // }
 
 });
 
